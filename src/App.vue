@@ -4,19 +4,29 @@
         v-bind:value="searchString"
         v-on:input="filterUsers"
     >
-    <div class="users" v-for="user in users" :key="user.id">
-      <div>{{user.name.first + ' ' +user.name.last}}</div>
-    </div>
+    <template v-if="selectedUsers.length">
+      <user-list v-bind:users="selectedUsers" />
+    </template>
+    <template v-else-if="users.length">
+      <user-list v-bind:users="users" />
+    </template>
+    <template v-else>
+      <div>Users are loading</div>
+    </template>
     <button @click="fetchUsers">Get users</button>
   </div>
   <div class="right">Detailed</div>
 </template>
 
 <script>
+import userList from './components/usersList'
 export default {
+  components:{
+    userList
+  },
   data() {
     return{
-      users:[],//[{id:1, name: 'user1'}, {id: 1, name: 'user2'}],
+      users:[],
       selectedUsers: [],
       searchString:''
     }
@@ -24,7 +34,7 @@ export default {
   methods:{
     filterUsers(event){
       this.searchString = event.target.value
-      this.selectedUsers = this.users.filter(user=>user.name.includes(this.searchString))
+      this.selectedUsers = this.users.filter(user=>user.name.first.includes(this.searchString))
     },
     async fetchUsers(){
       const users = await fetch('https://randomuser.me/api/?results=25&inc=gender,name,email,picture')
