@@ -1,27 +1,31 @@
 <template>
-  <div class="user-detail">
+  <div className="user-detail">
     {{ userName }}
     {{ user }}
   </div>
 </template>
 
-<script>
-import {UserType} from '@/types/user'
-export default {
+<script lang="ts">
+import UserType from '@/types/user'
+import {defineComponent, PropType} from "vue";
+
+export default defineComponent({
   props: {
-    user:{
-      type: UserType,
+    user: {
+      type: Object as PropType<UserType>,
       required: true
     }
   },
-  computed:{
-    userName() {return this.user.name.first + ' ' + this.user.name.last}
+  computed: {
+    userName() {
+      return this.user.name.first + ' ' + this.user.name.last
+    }
   }
-}
+})
 </script>
 
 <style scoped>
-.user-detail{
+.user-detail {
   padding: 100px;
 }
 </style>

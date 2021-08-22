@@ -1,58 +1,55 @@
 <template>
-  <div className="user-card">
-    <img className="user-picture-small" :src="user.picture.thumbnail" :alt="userName">
-    <div className="user-text">
-      <div className="name">
+  <li class="user-card">
+    <img class="user-picture-small" :src="user.picture.thumbnail" :alt="userName">
+    <div class="user-text">
+      <div class="name">
         {{ userName }}
       </div>
-      <div className="email">
+      <div class="email">
         {{ user.email }}
       </div>
     </div>
-  </div>
+  </li>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import UserType from '@/types/user'
+import {defineComponent, PropType} from "vue";
+
+export default defineComponent({
   props: {
-    user: {
-      type: Object,
+    user:{
+      type: Object as PropType<UserType>,
       required: true
     }
   },
   computed: {
-    userName() {
-      return this.user.name.first + ' ' + this.user.name.last
-    }
+    userName():string {return this.user.name.first + ' ' + this.user.name.last},
   }
-}
+})
 </script>
 
 <style scoped>
-.user-card {
+.user-card{
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  margin: 20px 10px;
+  margin:20px 10px;
   cursor: pointer;
 }
-
-.user-picture-small {
+.user-picture-small{
   border-radius: 50%;
   width: 56px;
   height: 56px;
 }
-
-.user-text {
+.user-text{
   padding-left: 20px;
   margin: auto 0 auto 0;
 }
-
-.name {
+.name{
   font-size: 1.2em;
 }
-
-.email {
+.email{
   font-size: 0.7em;
 }
 </style>

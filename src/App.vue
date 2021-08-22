@@ -33,47 +33,48 @@ import userList from './components/usersList.vue'
 import userDetail from './components/userDetail.vue'
 import loadingSpinner from './components/loadingSpinner.vue'
 
-import { defineComponent } from 'vue';
-import {UserType} from './types/user.ts'
+import { defineComponent, PropType } from 'vue';
+import UserType from './types/user.ts'
+
 
 export default defineComponent({
   name: 'App',
   components:{
     userList, userDetail, loadingSpinner
   },
-  data() {
+  data(){
     return{
-      users: [] as UserType[],
-      selectedUsers: [] as UserType[],
+      users: [] as Array as PropType<UserType[]>,
+      selectedUsers: [] as Array as PropType<UserType[]>,
       searchString: '' as string | null,
       selectedUser: null as UserType | null,
       fetchingNew: false,
       justFetched: false
     }
   },
-  created(){
+  created():void{
     this.fetchUsers()
     this.selectedUsers = this.users
   },
-  mounted(){
+  mounted():void{
     if (localStorage.getItem('searchString')){
       this.searchString = localStorage.getItem('searchString')
     }
   },
   watch: {
-    searchString(newValue){
+    searchString(newValue):void{
       localStorage.setItem('searchString', newValue)
     }
   },
   methods:{
-    filterUsers(event: Event){
+    filterUsers(event: Event):void{
       const input = event.target as HTMLTextAreaElement;
       this.searchString = input.value
       this.selectedUsers = this.users.filter(
           (user:UserType)=>user.name.first.includes(this.searchString)
       )
     },
-    async fetchUsers(){
+    async fetchUsers():Promise|void{
       if (this.justFetched || this.fetchingNew){
         return
       }
@@ -96,7 +97,7 @@ export default defineComponent({
         })
         .catch(e=>console.error(e))
     },
-    showUserDetail(user: UserType){
+    showUserDetail(user: UserType):void{
       this.selectedUser = user
     },
   }

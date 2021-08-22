@@ -1,6 +1,6 @@
 import {UserLocation, UserName, UserPicture, DateOfBirth} from './UserProps'
 
-export type UserType = {
+type UserType = {
   readonly "gender": string,
     // "gender": "male",
   readonly "name": UserName,
@@ -27,3 +27,5 @@ export type UserType = {
       //   "medium": "https://randomuser.me/api/portraits/med/men/57.jpg",
       //   "thumbnail": "https://randomuser.me/api/portraits/thumb/men/57.jpg" }
 }
+
+export default UserType
