@@ -43,7 +43,7 @@ import userDetail from './components/userDetail.vue'
 import loadingSpinner from './components/loadingSpinner.vue'
 
 import { defineComponent, PropType, ref } from 'vue';
-import UserType from './types/user.ts'
+import UserType from '@/types/user';
 import Popup from "@/components/Popup.vue";
 
 export default defineComponent({
