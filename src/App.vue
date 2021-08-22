@@ -14,7 +14,7 @@
         v-on:getMoreUsers="fetchUsers"
     />
     <div v-else>
-      Too complex
+      No users found
     </div>
     <div class="status">
       <loading-spinner v-if="fetchingNew" />
@@ -31,20 +31,22 @@
   </div>
   <Popup
       v-if="mobile && selectedUser"
-      :close-popup="()=> this.selectedUser=null"
+      :close-popup="() => this.selectedUser=null"
   >
     <user-detail v-bind:user="selectedUser" />
   </Popup>
 </template>
 
 <script lang="ts">
-import userList from './components/usersList.vue'
-import userDetail from './components/userDetail.vue'
-import loadingSpinner from './components/loadingSpinner.vue'
+import userList from "@/components/userList.vue";
+import userDetail from '@/components/userDetail.vue'
+import loadingSpinner from '@/components/loadingSpinner.vue'
 
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent,
+  // PropType,
+  ref } from 'vue';
 import UserType from '@/types/user';
-import Popup from "@/components/Popup.vue";
+import Popup from "@/components/popup.vue";
 
 export default defineComponent({
   name: 'App',
@@ -53,8 +55,8 @@ export default defineComponent({
   },
   data(){
     return{
-      users: [] as PropType<UserType>,
-      searchString: '' as string | null,
+      users: ref<UserType[]>([]),
+      searchString: '' as string,
       selectedUser: null as UserType | null,
       fetchingNew: false,
       justFetched: false,
@@ -63,13 +65,12 @@ export default defineComponent({
     }
   },
   computed:{
-    selectedUsers: function(): PropType<UserType[]> {
-      if (!this.searchString){
+    selectedUsers(): any {
+      if (!this.searchString) {
         return this.users
       }
       return this.users.filter(
-          (user:PropType<UserType>)=>{
-
+          (user)=>{
             return user.name.first.toLowerCase().includes(this.searchString.toLowerCase()) ||
                    user.name.last.toLowerCase().includes(this.searchString.toLowerCase())
           }
@@ -84,7 +85,7 @@ export default defineComponent({
   },
   mounted():void{
     if (localStorage.getItem('searchString')){
-      this.searchString = localStorage.getItem('searchString')
+      this.searchString = localStorage.getItem('searchString') || ''
     }
     window.addEventListener('resize', this.onWidthChange)
   },
@@ -101,7 +102,7 @@ export default defineComponent({
       const input = event.target as HTMLTextAreaElement;
       this.searchString = input.value
     },
-    async fetchUsers():Promise|void{
+    async fetchUsers(): Promise<any>{
       if (this.justFetched || this.fetchingNew){
         return
       }

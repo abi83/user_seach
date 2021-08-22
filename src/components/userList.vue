@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import userCard from './userCard'
+import userCard from './userCard.vue'
 import UserType from '@/types/user'
 import { defineComponent, PropType} from 'vue'
 
@@ -24,17 +24,17 @@ export default defineComponent({
     }
   },
   mounted():void{
-    const userList = this.$refs.scrollComponent
+    const userList = this.$refs.scrollComponent as HTMLElement
     userList.addEventListener("scroll", this.handleScroll)
   },
   beforeUnmount():void{
-    const userList = this.$refs.scrollComponent
+    const userList = this.$refs.scrollComponent as HTMLElement
     userList.removeEventListener("scroll", this.handleScroll)
   },
   methods:{
     handleScroll():void{
-      const element = this.$refs.scrollComponent
-      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      const userList = this.$refs.scrollComponent as HTMLElement
+      if (userList.scrollHeight - userList.scrollTop === userList.clientHeight) {
         this.$emit('getMoreUsers')
       }
     }
