@@ -27,7 +27,7 @@ export default defineComponent({
     const userList = this.$refs.scrollComponent
     userList.addEventListener("scroll", this.handleScroll)
   },
-  unmounted():void{
+  beforeUnmount():void{
     const userList = this.$refs.scrollComponent
     userList.removeEventListener("scroll", this.handleScroll)
   },

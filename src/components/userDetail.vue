@@ -15,16 +15,24 @@
     </div>
     <div class="info">
       <p>
-        Location: {{ user.location}}
+        Location: {{ user.location.country }}
       </p>
       <p>
-        Date of birth: {{ user.dob.date }}
+        Address: {{ user.location.street.name }},
+        {{user.location.street.number}}. {{user.location.postcode}} {{ user.location.city}}
       </p>
       <p>
+        Date of birth: {{ dateOfBirth.toDateString() }}
+      </p>
+      <div  >
         Contacts:
-        email:{{user.email}}
-        phone: {{user.phone}}
-      </p>
+        <p>
+          email: {{user.email}}
+        </p>
+        <p>
+          phone: {{user.phone}}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +51,9 @@ export default defineComponent({
   computed:{
     userName: function ():string {
      return fullName(this.user)
+    },
+    dateOfBirth: function (): Date{
+      return new Date(this.user.dob.date)
     }
   }
 })
@@ -50,14 +61,10 @@ export default defineComponent({
 
 <style scoped>
 .detail{
-  padding: 50px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
-/*.user-name{*/
-/*  background-color: red;*/
-/*  text-shadow: gray;*/
-/*}*/
 .picture-large{
   border-radius: 50%;
   width: 200px;
@@ -66,13 +73,15 @@ export default defineComponent({
 .intro{
   display: flex;
   flex-direction: row;
+  margin-bottom: 30px;
 }
 .main-text{
   margin: auto;
+  padding-left: 25px;
 }
 .h2{
   position:relative;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 .h2:after  {
   content: "";

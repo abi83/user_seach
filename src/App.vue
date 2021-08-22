@@ -4,14 +4,17 @@
         v-bind:value="searchString"
         v-on:input="filterUsers"
     >
+    <div v-if="!users.length">
+      Users are loading...
+    </div>
     <user-list
-        v-if="selectedUsers.length"
+        v-else-if="users.length && selectedUsers.length"
         v-bind:users="selectedUsers"
         v-on:selectUser="showUserDetail"
         v-on:getMoreUsers="fetchUsers"
     />
     <div v-else>
-      <div>Users are loading</div>
+      Too complex
     </div>
     <div class="status">
       <loading-spinner v-if="fetchingNew" />
@@ -20,12 +23,18 @@
       </button>
     </div>
   </div>
-  <div class="right">
+  <div class="right" v-if="!mobile">
     <user-detail v-bind:user="selectedUser" v-if="selectedUser"/>
     <div v-else>
       Click user in left panel
     </div>
   </div>
+  <Popup
+      v-if="mobile && selectedUser"
+      :close-popup="()=> this.selectedUser=null"
+  >
+    <user-detail v-bind:user="selectedUser" />
+  </Popup>
 </template>
 
 <script lang="ts">
@@ -33,33 +42,54 @@ import userList from './components/usersList.vue'
 import userDetail from './components/userDetail.vue'
 import loadingSpinner from './components/loadingSpinner.vue'
 
-import { defineComponent, PropType } from 'vue';
-import UserType from './types/user'
-
+import { defineComponent, PropType, ref } from 'vue';
+import UserType from './types/user.ts'
+import Popup from "@/components/Popup.vue";
 
 export default defineComponent({
   name: 'App',
   components:{
-    userList, userDetail, loadingSpinner
+    userList, userDetail, loadingSpinner, Popup
   },
   data(){
     return{
-      users: [] as Array as PropType<UserType[]>,
-      selectedUsers: [] as Array as PropType<UserType[]>,
+      users: [] as PropType<UserType>,
       searchString: '' as string | null,
       selectedUser: null as UserType | null,
       fetchingNew: false,
-      justFetched: false
+      justFetched: false,
+      windowWidth: ref(window.innerWidth),
+      popup: false
+    }
+  },
+  computed:{
+    selectedUsers: function(): PropType<UserType[]> {
+      if (!this.searchString){
+        return this.users
+      }
+      return this.users.filter(
+          (user:PropType<UserType>)=>{
+
+            return user.name.first.toLowerCase().includes(this.searchString.toLowerCase()) ||
+                   user.name.last.toLowerCase().includes(this.searchString.toLowerCase())
+          }
+      )
+    },
+    mobile: function (): boolean{
+      return this.windowWidth < 800
     }
   },
   created():void{
     this.fetchUsers()
-    this.selectedUsers = this.users
   },
   mounted():void{
     if (localStorage.getItem('searchString')){
       this.searchString = localStorage.getItem('searchString')
     }
+    window.addEventListener('resize', this.onWidthChange)
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.onWidthChange)
   },
   watch: {
     searchString(newValue):void{
@@ -70,9 +100,6 @@ export default defineComponent({
     filterUsers(event: Event):void{
       const input = event.target as HTMLTextAreaElement;
       this.searchString = input.value
-      this.selectedUsers = this.users.filter(
-          (user:UserType)=>user.name.first.includes(this.searchString)
-      )
     },
     async fetchUsers():Promise|void{
       if (this.justFetched || this.fetchingNew){
@@ -100,6 +127,9 @@ export default defineComponent({
     showUserDetail(user: UserType):void{
       this.selectedUser = user
     },
+    onWidthChange(){
+      this.windowWidth = window.innerWidth
+    }
   }
 })
 
@@ -132,13 +162,17 @@ export default defineComponent({
 }
 .left{
   flex: 33%;
-  max-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 .right{
   flex: 67%;
-  /*padding: 100px;*/
+  display: flex;
+}
+.right > div:first-child {
+  margin: auto;
 }
 .btn{
   padding: 10px 30px;
@@ -147,6 +181,6 @@ export default defineComponent({
 .status{
   min-height: 84px;
   display: flex;
+  margin-bottom: 0;
 }
-
 </style>
