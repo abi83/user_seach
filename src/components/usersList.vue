@@ -24,17 +24,17 @@ export default defineComponent({
     }
   },
   mounted():void{
-    const userList = this.$refs.scrollComponent as HTMLElement
-    userList.addEventListener("scroll", this.handleScroll)
+    const usersList = this.$refs.scrollComponent as HTMLElement
+    usersList.addEventListener("scroll", this.handleScroll)
   },
   beforeUnmount():void{
-    const userList = this.$refs.scrollComponent as HTMLElement
-    userList.removeEventListener("scroll", this.handleScroll)
+    const usersList = this.$refs.scrollComponent as HTMLElement
+    usersList.removeEventListener("scroll", this.handleScroll)
   },
   methods:{
     handleScroll():void{
-      const userList = this.$refs.scrollComponent as HTMLElement
-      if (userList.scrollHeight - userList.scrollTop === userList.clientHeight) {
+      const usersList = this.$refs.scrollComponent as HTMLElement
+      if (usersList.scrollHeight - usersList.scrollTop === usersList.clientHeight) {
         this.$emit('getMoreUsers')
       }
     }

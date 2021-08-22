@@ -72,7 +72,13 @@ export default defineComponent({
     },
   },
   created():void{
-    this.fetchUsers()
+    const sessionStoredUsers = sessionStorage.getItem('users') || ''
+    if (sessionStoredUsers){
+      this.users = JSON.parse(sessionStoredUsers)
+      this.selectedUser = JSON.parse(sessionStorage.getItem('selectedUser') || '')
+    } else {
+      this.fetchUsers()
+    }
   },
   mounted():void{
     if (localStorage.getItem('searchString')){
@@ -108,6 +114,9 @@ export default defineComponent({
         .then(()=>{
           this.serverError = false
         })
+        .then(()=>{
+          sessionStorage.setItem('users', JSON.stringify(this.users))
+        })
         .catch((e)=>{
           this.serverError = true
           console.error(e)
@@ -118,6 +127,7 @@ export default defineComponent({
     },
     showUserDetail(user: UserType):void{
       this.selectedUser = user
+      sessionStorage.setItem('selectedUser', JSON.stringify(user))
     },
   }
 })
