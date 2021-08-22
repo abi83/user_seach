@@ -1,25 +1,28 @@
 <template>
-  <div class="user-detail">
+  <div className="user-detail">
     {{ userName }}
+    {{ user }}
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    user:{
+    user: {
       // type: Object,
       // required: true
     }
   },
-  computed:{
-    userName() {return this.user.name.first + ' ' + this.user.name.last}
+  computed: {
+    userName() {
+      return this.user.name.first + ' ' + this.user.name.last
+    }
   }
 }
 </script>
 
 <style scoped>
-.user-detail{
+.user-detail {
   padding: 100px;
 }
 </style>

@@ -10,8 +10,6 @@ export default {
 
 <style scoped>
 .lds-spinner {
-  /*display: inline-block;*/
-  /*position: relative;*/
   display: flex;
   width: 80px;
   height: 80px;

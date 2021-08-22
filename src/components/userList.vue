@@ -6,24 +6,14 @@
         @click="$emit('selectUser', user)"
     />
   </div>
-  <loading-spinner v-if="fetchingNew"/>
 </template>
 
 <script>
 import userCard from './userCard'
-import loadingSpinner from './loadingSpinner'
 
 export default {
   emits:['selectUser', 'getMoreUsers'],
-  data(){
-    return{
-      fetchingNew: false,
-      justFetched: false
-    }
-  },
-  components:{
-    userCard, loadingSpinner
-  },
+  components:{userCard,},
   props: {
     users:{
       type: Array,
@@ -31,47 +21,20 @@ export default {
     }
   },
   mounted(){
-    const userList = document.querySelector('.users')
+    const userList = this.$refs.scrollComponent
     userList.addEventListener("scroll", this.handleScroll)
+  },
+  unmounted(){
+    const userList = this.$refs.scrollComponent
+    userList.removeEventListener("scroll", this.handleScroll)
   },
   methods:{
     handleScroll(){
-    let element = this.$refs.scrollComponent
-    if (
-        !this.fetchingNew &&
-        !this.justFetched &&
-        element.scrollHeight - element.scrollTop === element.clientHeight) {
-      this.fetchingNew = true
-      console.log('Fetching called')
-      this.$emit('getMoreUsers')
-          .then(()=>{
-            this.fetchingNew = false
-            this.justFetched = true
-            console.log('fetching false, just true')
-            return new Promise(resolve => setTimeout(resolve, 1500))
-          })
-          .then(()=>{
-            this.justFetched=false
-            console.log('Can fetch again')
-          })
+      const element = this.$refs.scrollComponent
+      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+        this.$emit('getMoreUsers')
+      }
     }
-    // if (element.getBoundingClientRect().bottom < element.innerHeight) {
-    //     console.log('DONE')
-    //   } else {
-    //   console.log('Scrolling',
-    //       // element.getBoundingClientRect().bottom,
-    //       // element.scrollTop,
-    //       // element.scrollHeight,
-    //       // element.clientHeight,
-    //       element.scrollHeight - element.scrollTop === element.clientHeight,
-    //   )
-    //   }
-    }
-  },
-  unmounted(){
-    const userList = document.querySelector('.users')
-    userList.removeEventListener("scroll", this.handleScroll)
-    console.log('Unmounted')
   },
 }
 </script>

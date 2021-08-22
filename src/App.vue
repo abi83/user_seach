@@ -4,64 +4,61 @@
         v-bind:value="searchString"
         v-on:input="filterUsers"
     >
-    <template class="users-list" v-if="selectedUsers.length">
-      <user-list
-          v-bind:users="selectedUsers"
-          v-on:selectUser="showUserDetail"
-          v-on:getMoreUsers="fetchUsers"
-      />
-    </template>
-<!--    TODO: Remove user-list class-->
-    <template class="users-list" v-else-if="users.length">
-      <user-list
-          v-bind:users="users"
-          v-on:selectUser="showUserDetail"
-          v-on:getMoreUsers="fetchUsers"
-      />
-    </template>
+    <user-list
+        v-if="selectedUsers.length"
+        v-bind:users="selectedUsers"
+        v-on:selectUser="showUserDetail"
+        v-on:getMoreUsers="fetchUsers"
+    />
     <div v-else>
       <div>Users are loading</div>
     </div>
-    <button class="btn" @click="fetchUsers">Get users</button>
+    <div class="status">
+      <loading-spinner v-if="fetchingNew" />
+      <button v-else class="btn" @click="fetchUsers">
+        Get users
+      </button>
+    </div>
   </div>
   <div class="right">
-    <template v-if="selectedUser">
-      <user-detail v-bind:user="selectedUser"/>
-    </template>
-    <template v-else>
+    <user-detail v-bind:user="selectedUser" v-if="selectedUser"/>
+    <div v-else>
       Click user in left panel
-    </template>
+    </div>
   </div>
 </template>
 
 <script>
 import userList from './components/usersList'
 import userDetail from './components/userDetail'
+import loadingSpinner from './components/loadingSpinner'
+
 export default {
   components:{
-    userList, userDetail
+    userList, userDetail, loadingSpinner
   },
   data() {
     return{
       users:[],
       selectedUsers: [],
       searchString:'',
-      selectedUser: null
+      selectedUser: null,
+      fetchingNew: false,
+      justFetched: false
     }
   },
+  created(){
+    this.fetchUsers()
+    this.selectedUsers = this.users
+  },
   mounted(){
-    if (localStorage.searchString){
-      this.searchString = localStorage.searchString
-      console.log('From LC')
-    } else {
-      console.log('Nothing in LC')
+    if (localStorage.getItem('searchString')){
+      this.searchString = localStorage.getItem('searchString')
     }
   },
   watch: {
     searchString(newValue){
-      localStorage.searchString = newValue
-      console.log('LC set', newValue)
-      //TODO: use set and get methods
+      localStorage.setItem('searchString', newValue)
     }
   },
   methods:{
@@ -70,19 +67,30 @@ export default {
       this.selectedUsers = this.users.filter(user=>user.name.first.includes(this.searchString))
     },
     async fetchUsers(){
-      const users = await fetch('https://randomuser.me/api/?results=25&inc=gender,name,email,picture')
+      if (this.justFetched || this.fetchingNew){
+        return
+      }
+      this.fetchingNew = true
+
+      return await fetch('https://randomuser.me/api/?results=25&inc=gender,name,email,picture,location,dob,phone')
         .then(res=>res.json())
+        .then(users=>{
+          this.users.push(...users.results);
+          return new Promise(resolve => setTimeout(resolve, 1000))
+        })
+        .then(()=>{
+          this.fetchingNew = false
+          this.justFetched = true
+          return new Promise(resolve => setTimeout(resolve, 300))
+        })
+        .then(()=>{
+          this.justFetched=false
+        })
         .catch(e=>console.error(e))
-      console.log('Fetched')
-      this.users.push(...users.results);
-      return new Promise(resolve => setTimeout(resolve, 750))
     },
     showUserDetail(user){
       this.selectedUser = user
     },
-    handleScroll(e){
-      console.log(e)
-    }
   }
 }
 
@@ -115,21 +123,21 @@ export default {
 }
 .left{
   flex: 33%;
-  /*border: 1px solid red;*/
   max-height: 100vh;
   display: flex;
   flex-direction: column;
-  /*height: 100%;*/
 }
 .right{
   flex: 67%;
   padding: 100px;
-  /*border: 1px solid green;*/
 }
 .btn{
   padding: 10px 30px;
   margin: 20px auto;
-
+}
+.status{
+  min-height: 84px;
+  display: flex;
 }
 
 </style>
