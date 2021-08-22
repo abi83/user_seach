@@ -1,38 +1,41 @@
 <template>
-  <div class="detail">
-    <div class="intro">
-      <img class="picture-large" :src="user.picture.large" :alt="userName">
-      <div class="main-text">
-        <div class="h2">
-          <h2>
-            {{ userName }}
-          </h2>
+  <div class="detail-wrapper">
+    <div class="detail">
+      <div class="intro">
+        <img class="picture-large" :src="user.picture.large" :alt="userName">
+        <div class="main-text">
+          <div class="h2">
+            <h2>
+              {{ userName }}
+            </h2>
+          </div>
+          <p>
+            {{ user.gender }}, {{ user.dob.age }}
+          </p>
         </div>
-        <p>
-          {{ user.gender }}, {{ user.dob.age }}
-        </p>
       </div>
-    </div>
-    <div class="info">
-      <p>
-        Location: {{ user.location.country }}
-      </p>
-      <p>
-        Address: {{ user.location.street.name }},
-        {{user.location.street.number}}. {{user.location.postcode}} {{ user.location.city}}
-      </p>
-      <p>
-        Date of birth: {{ dateOfBirth.toDateString() }}
-      </p>
-      <div  >
-        Contacts:
+      <div class="info">
         <p>
-          email: {{user.email}}
+          Location: {{ user.location.country }}
         </p>
         <p>
-          phone: {{user.phone}}
+          Address: {{ user.location.street.name }},
+          {{user.location.street.number}}. {{user.location.postcode}} {{ user.location.city}}
         </p>
+        <p>
+          Date of birth: {{ dateOfBirth.toDateString() }}
+        </p>
+        <div  >
+          Contacts:
+          <p>
+            email: {{user.email}}
+          </p>
+          <p>
+            phone: {{user.phone}}
+          </p>
+        </div>
       </div>
+      <button class="btn" @click="closeDetail()">Close</button>
     </div>
   </div>
 </template>
@@ -46,6 +49,10 @@ export default defineComponent({
     user:{
       type: Object as PropType<UserType>,
       required: true
+    },
+    closeDetail: {
+     type: Function,
+     required: true
     }
   },
   computed:{
@@ -62,9 +69,25 @@ export default defineComponent({
 
 <style scoped>
 .detail{
+  background-color: white;
   padding: 20px;
   display: flex;
   flex-direction: column;
+}
+@media screen and (max-width: 800px) {
+  .detail-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, .2);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .picture-large{
   border-radius: 50%;
