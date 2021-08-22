@@ -1,7 +1,7 @@
 <template>
-  <li class="user-card">
-    <img class="user-picture-small" :src="user.picture.thumbnail" :alt="userName">
-    <div class="user-text">
+  <li class="card">
+    <img class="picture-small" :src="user.picture.thumbnail" :alt="userName">
+    <div class="intro">
       <div class="name">
         {{ userName }}
       </div>
@@ -15,6 +15,7 @@
 <script lang="ts">
 import UserType from '@/types/user'
 import {defineComponent, PropType} from "vue";
+import {shortFullName} from "@/utils/common";
 
 export default defineComponent({
   props: {
@@ -24,25 +25,27 @@ export default defineComponent({
     }
   },
   computed: {
-    userName():string {return this.user.name.first + ' ' + this.user.name.last},
+    userName: function ():string {
+     return shortFullName(this.user)
+    }
   }
 })
 </script>
 
 <style scoped>
-.user-card{
+.card{
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   margin:20px 10px;
   cursor: pointer;
 }
-.user-picture-small{
+.picture-small{
   border-radius: 50%;
   width: 56px;
   height: 56px;
 }
-.user-text{
+.intro{
   padding-left: 20px;
   margin: auto 0 auto 0;
 }

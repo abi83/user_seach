@@ -34,7 +34,7 @@ import userDetail from './components/userDetail.vue'
 import loadingSpinner from './components/loadingSpinner.vue'
 
 import { defineComponent, PropType } from 'vue';
-import UserType from './types/user.ts'
+import UserType from './types/user'
 
 
 export default defineComponent({
@@ -138,7 +138,7 @@ export default defineComponent({
 }
 .right{
   flex: 67%;
-  padding: 100px;
+  /*padding: 100px;*/
 }
 .btn{
   padding: 10px 30px;
