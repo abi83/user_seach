@@ -8,12 +8,15 @@
       <user-list
           v-bind:users="selectedUsers"
           v-on:selectUser="showUserDetail"
+          v-on:getMoreUsers="fetchUsers"
       />
     </template>
+<!--    TODO: Remove user-list class-->
     <template class="users-list" v-else-if="users.length">
       <user-list
           v-bind:users="users"
           v-on:selectUser="showUserDetail"
+          v-on:getMoreUsers="fetchUsers"
       />
     </template>
     <div v-else>
@@ -46,6 +49,21 @@ export default {
       selectedUser: null
     }
   },
+  mounted(){
+    if (localStorage.searchString){
+      this.searchString = localStorage.searchString
+      console.log('From LC')
+    } else {
+      console.log('Nothing in LC')
+    }
+  },
+  watch: {
+    searchString(newValue){
+      localStorage.searchString = newValue
+      console.log('LC set', newValue)
+      //TODO: use set and get methods
+    }
+  },
   methods:{
     filterUsers(event){
       this.searchString = event.target.value
@@ -55,12 +73,15 @@ export default {
       const users = await fetch('https://randomuser.me/api/?results=25&inc=gender,name,email,picture')
         .then(res=>res.json())
         .catch(e=>console.error(e))
-      this.users = users.results;
+      console.log('Fetched')
+      this.users.push(...users.results);
+      return new Promise(resolve => setTimeout(resolve, 750))
     },
     showUserDetail(user){
-      console.log('Debug00', user)
       this.selectedUser = user
-      console.log(this.selectedUser)
+    },
+    handleScroll(e){
+      console.log(e)
     }
   }
 }
