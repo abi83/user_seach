@@ -15,24 +15,16 @@
         </div>
       </div>
       <div class="info">
-        <p>
-          Location: {{ user.location.country }}
-        </p>
+        <p>Location: {{ user.location.country }}</p>
         <p>
           Address: {{ user.location.street.name }},
           {{user.location.street.number}}. {{user.location.postcode}} {{ user.location.city}}
         </p>
-        <p>
-          Date of birth: {{ dateOfBirth.toDateString() }}
-        </p>
-        <div  >
+        <p>Date of birth: {{ dateOfBirth.toDateString() }}</p>
+        <div>
           Contacts:
-          <p>
-            email: {{user.email}}
-          </p>
-          <p>
-            phone: {{user.phone}}
-          </p>
+          <p>email: {{user.email}}</p>
+          <p>phone: {{user.phone}}</p>
         </div>
       </div>
       <button class="btn" @click="closeDetail()">Close</button>
@@ -44,6 +36,7 @@
 import UserType from '@/types/user'
 import {fullName} from "@/utils/common";
 import {defineComponent, PropType} from "vue";
+
 export default defineComponent({
   props: {
     user:{
@@ -60,7 +53,6 @@ export default defineComponent({
      return fullName(this.user)
     },
     dateOfBirth: function (): Date{
-      console.log('Date reformatting')
       return new Date(this.user.dob.date)
     }
   }

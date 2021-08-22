@@ -7,9 +7,9 @@
     <div v-if="!users.length">
       Users are loading...
     </div>
-    <dif v-if="serverError">
+    <div v-if="serverError">
       Connection problem...
-    </dif>
+    </div>
     <user-list
         v-else-if="users.length && selectedUsers.length"
         v-bind:users="selectedUsers"
@@ -26,8 +26,7 @@
       </button>
     </div>
   </div>
-  <!--  TODO: make popup with styles-->
-  <div class="right" v-if="!mobile">
+  <div class="right">
     <user-detail
         v-bind:user="selectedUser"
         v-if="selectedUser"
@@ -37,12 +36,6 @@
       Click user in left panel
     </div>
   </div>
-<!--  <Popup-->
-<!--      v-if="mobile && selectedUser"-->
-<!--      :close-popup="() => this.selectedUser=null"-->
-<!--  >-->
-<!--    <user-detail v-bind:user="selectedUser" />-->
-<!--  </Popup>-->
 </template>
 
 <script lang="ts">
@@ -50,19 +43,12 @@ import userList from './components/usersList.vue'
 import userDetail from './components/userDetail.vue'
 import loadingSpinner from './components/loadingSpinner.vue'
 
-import { defineComponent,
-  // PropType,
-  // ref
-} from 'vue';
+import { defineComponent } from 'vue';
 import UserType from '@/types/user';
-// import Popup from "@/components/Popup.vue";
 
 export default defineComponent({
   name: 'App',
-  components:{
-    userList, userDetail, loadingSpinner,
-    // Popup
-  },
+  components:{ userList, userDetail, loadingSpinner },
   data(){
     return{
       users: [] as UserType[],
@@ -70,8 +56,6 @@ export default defineComponent({
       selectedUser: null as UserType | null,
       fetchingNow: false,
       serverError: false,
-      // windowWidth: ref(window.innerWidth),
-      // popup: false
     }
   },
   computed:{
@@ -86,9 +70,6 @@ export default defineComponent({
           }
       )
     },
-    // mobile: function (): boolean{
-    //   return this.windowWidth < 800
-    // }
   },
   created():void{
     this.fetchUsers()
@@ -97,11 +78,7 @@ export default defineComponent({
     if (localStorage.getItem('searchString')){
       this.searchString = localStorage.getItem('searchString') || ''
     }
-    // window.addEventListener('resize', this.onWidthChange)
   },
-  // beforeUnmount() {
-  //   window.removeEventListener('resize', this.onWidthChange)
-  // },
   watch: {
     searchString(newValue):void{
       localStorage.setItem('searchString', newValue)
@@ -142,9 +119,6 @@ export default defineComponent({
     showUserDetail(user: UserType):void{
       this.selectedUser = user
     },
-    // onWidthChange(){
-    //   this.windowWidth = window.innerWidth
-    // }
   }
 })
 
