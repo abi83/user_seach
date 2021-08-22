@@ -7,6 +7,9 @@
     <div v-if="!users.length">
       Users are loading...
     </div>
+    <dif v-if="serverError">
+      Connection problem...
+    </dif>
     <user-list
         v-else-if="users.length && selectedUsers.length"
         v-bind:users="selectedUsers"
@@ -17,7 +20,7 @@
       No users found
     </div>
     <div class="status">
-      <loading-spinner v-if="fetchingNew" />
+      <loading-spinner v-if="fetchingNow" />
       <button v-else class="btn" @click="fetchUsers">
         Get users
       </button>
@@ -39,9 +42,9 @@
 </template>
 
 <script lang="ts">
-import userList from "@/components/userList.vue";
-import userDetail from '@/components/userDetail.vue'
-import loadingSpinner from '@/components/loadingSpinner.vue'
+import userList from './components/usersList.vue'
+import userDetail from './components/userDetail.vue'
+import loadingSpinner from './components/loadingSpinner.vue'
 
 import { defineComponent,
   // PropType,
@@ -59,8 +62,8 @@ export default defineComponent({
       users: [] as UserType[],
       searchString: '' as string,
       selectedUser: null as UserType | null,
-      fetchingNew: false,
-      justFetched: false,
+      fetchingNow: false,
+      serverError: false,
       windowWidth: ref(window.innerWidth),
       popup: false
     }
@@ -104,32 +107,30 @@ export default defineComponent({
       this.searchString = input.value
     },
     async fetchUsers(): Promise<any>{
-      if (this.justFetched || this.fetchingNew){
+      if (this.fetchingNow){
         return
       }
-      this.fetchingNew = true
+      this.fetchingNow = true
 
       return await fetch('https://randomuser.me/api/?results=25&inc=gender,name,email,picture,location,dob,phone')
-        .then(res=>res.json())
+        .then(res=>{
+          if (!res.ok) {
+            return Promise.reject(res.status)
+          }
+          return res.json()})
         .then((json: {results: Array<UserType> })=>{
           const users: UserType[]  = json.results;
           this.users.push(...users);
-          return new Promise(resolve => setTimeout(resolve, 1000))
         })
         .then(()=>{
-          // TODO: reformat!
-          this.fetchingNew = false
-          this.justFetched = true
-          return new Promise(resolve => setTimeout(resolve, 300))
+          this.serverError = false
         })
-        // .then(()=>{
-        //   this.justFetched=false
-        // })
         .catch((e)=>{
+          this.serverError = true
           console.error(e)
         })
         .finally(() => {
-          this.fetchingNew=false
+          this.fetchingNow = false
         })
     },
     showUserDetail(user: UserType):void{
