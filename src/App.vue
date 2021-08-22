@@ -1,25 +1,36 @@
 <template>
-  <div>
-    Left block
-    <input type="text" v-model="searchString" v-on:input="filterUsers">
-    {{ selectedUsers.map(u=>u.name) }}
+  <div class="left">
+    <input class="input" type="text" placeholder="Filter users"
+        v-bind:value="searchString"
+        v-on:input="filterUsers"
+    >
+    <div class="users" v-for="user in users" :key="user.id">
+      <div>{{user.name.first + ' ' +user.name.last}}</div>
+    </div>
+    <button @click="fetchUsers">Get users</button>
   </div>
-  <div>Detailed</div>
+  <div class="right">Detailed</div>
 </template>
 
 <script>
 export default {
   data() {
     return{
-      users:[{name: 'user1'}, {name: 'user2'}],
+      users:[],//[{id:1, name: 'user1'}, {id: 1, name: 'user2'}],
       selectedUsers: [],
       searchString:''
     }
   },
   methods:{
-    filterUsers(){
-      console.log('filter', this.searchString)
+    filterUsers(event){
+      this.searchString = event.target.value
       this.selectedUsers = this.users.filter(user=>user.name.includes(this.searchString))
+    },
+    async fetchUsers(){
+      const users = await fetch('https://randomuser.me/api/?results=25&inc=gender,name,email,picture')
+        .then(res=>res.json())
+        .catch(e=>console.error(e))
+      this.users = users.results;
     }
   }
 }
@@ -27,5 +38,31 @@ export default {
 </script>
 
 <style>
+#app{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  max-width: 1076px;
+  margin: auto;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.input{
+  border: 1px solid black;
+  /*min-width: 100px;*/
+  padding: 10px;
+  margin: 10px;
+}
+.left{
+  flex: 33%;
+  border: 1px solid red;
+}
+.right{
+  flex: 67%;
+  border: 1px solid green;
+}
 
 </style>
