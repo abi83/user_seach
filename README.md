@@ -30,4 +30,4 @@ location and contact information along with their picture.
 
 ## Demo
 
-link
+https://master.d22ozs7o0le6vh.amplifyapp.com/

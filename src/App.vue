@@ -1,28 +1,31 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    Left block
+    <input type="text" v-model="searchString" v-on:input="filterUsers">
+    {{ selectedUsers.map(u=>u.name) }}
   </div>
+  <div>Detailed</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return{
+      users:[{name: 'user1'}, {name: 'user2'}],
+      selectedUsers: [],
+      searchString:''
+    }
+  },
+  methods:{
+    filterUsers(){
+      console.log('filter', this.searchString)
+      this.selectedUsers = this.users.filter(user=>user.name.includes(this.searchString))
+    }
   }
 }
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
