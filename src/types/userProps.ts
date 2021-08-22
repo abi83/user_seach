@@ -1,5 +1,5 @@
 export type DateOfBirth = {
-  "date": Date,
+  "date": string,
   "age": number
 }
 

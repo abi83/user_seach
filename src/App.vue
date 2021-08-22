@@ -23,6 +23,7 @@
       </button>
     </div>
   </div>
+  <!--  TODO: make popup with styles-->
   <div class="right" v-if="!mobile">
     <user-detail v-bind:user="selectedUser" v-if="selectedUser"/>
     <div v-else>
@@ -46,7 +47,7 @@ import { defineComponent,
   // PropType,
   ref } from 'vue';
 import UserType from '@/types/user';
-import Popup from "@/components/popup.vue";
+import Popup from "@/components/Popup.vue";
 
 export default defineComponent({
   name: 'App',
@@ -55,7 +56,7 @@ export default defineComponent({
   },
   data(){
     return{
-      users: ref<UserType[]>([]),
+      users: [] as UserType[],
       searchString: '' as string,
       selectedUser: null as UserType | null,
       fetchingNew: false,
@@ -65,7 +66,7 @@ export default defineComponent({
     }
   },
   computed:{
-    selectedUsers(): any {
+    selectedUsers(): UserType[] {
       if (!this.searchString) {
         return this.users
       }
@@ -116,14 +117,20 @@ export default defineComponent({
           return new Promise(resolve => setTimeout(resolve, 1000))
         })
         .then(()=>{
+          // TODO: reformat!
           this.fetchingNew = false
           this.justFetched = true
           return new Promise(resolve => setTimeout(resolve, 300))
         })
-        .then(()=>{
-          this.justFetched=false
+        // .then(()=>{
+        //   this.justFetched=false
+        // })
+        .catch((e)=>{
+          console.error(e)
         })
-        .catch(e=>console.error(e))
+        .finally(() => {
+          this.fetchingNew=false
+        })
     },
     showUserDetail(user: UserType):void{
       this.selectedUser = user

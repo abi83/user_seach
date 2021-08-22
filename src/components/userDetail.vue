@@ -53,6 +53,7 @@ export default defineComponent({
      return fullName(this.user)
     },
     dateOfBirth: function (): Date{
+      console.log('Date reformatting')
       return new Date(this.user.dob.date)
     }
   }
