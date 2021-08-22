@@ -4,16 +4,16 @@
         v-bind:value="searchString"
         v-on:input="filterUsers"
     >
-    <template v-if="selectedUsers.length">
+    <template class="users-list" v-if="selectedUsers.length">
       <user-list v-bind:users="selectedUsers" />
     </template>
-    <template v-else-if="users.length">
+    <template class="users-list" v-else-if="users.length">
       <user-list v-bind:users="users" />
     </template>
-    <template v-else>
+    <div v-else>
       <div>Users are loading</div>
-    </template>
-    <button @click="fetchUsers">Get users</button>
+    </div>
+    <button class="btn" @click="fetchUsers">Get users</button>
   </div>
   <div class="right">Detailed</div>
 </template>
@@ -55,24 +55,39 @@ export default {
   max-width: 1076px;
   margin: auto;
 }
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"),
+        url("./fonts/Poppins-Regular.ttf") format("truetype");
+}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins", Helvetica, Arial, serif;
 }
 .input{
   border: 1px solid black;
-  /*min-width: 100px;*/
   padding: 10px;
-  margin: 10px;
+  margin: 30px 10px 30px 10px;
+  width: calc(100% - 20px);
 }
 .left{
   flex: 33%;
-  border: 1px solid red;
+  /*border: 1px solid red;*/
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /*height: 100%;*/
 }
 .right{
   flex: 67%;
-  border: 1px solid green;
+  /*border: 1px solid green;*/
+}
+.btn{
+  padding: 10px 30px;
+  margin: 20px auto;
+
 }
 
 </style>

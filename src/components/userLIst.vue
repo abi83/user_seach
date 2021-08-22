@@ -1,6 +1,8 @@
 <template>
-  <div class="users" v-for="user in users" :key="user.id">
-    <user-card v-bind:user="user"/>
+  <div class="users">
+    <template v-for="user in users" :key="user.id">
+      <user-card v-bind:user="user"/>
+    </template>
   </div>
 </template>
 
@@ -22,7 +24,7 @@ export default {
 
 <style scoped>
 .users{
-  padding: 5px;
-  border: 2px solid blue;
+  overflow-y: scroll;
+  overflow-x: auto;
 }
 </style>
