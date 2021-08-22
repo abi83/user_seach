@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import userList from './components/usersList'
+import userList from './components/userList'
 export default {
   components:{
     userList
