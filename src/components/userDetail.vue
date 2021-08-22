@@ -105,7 +105,7 @@ export default defineComponent({
   position: absolute;
   height: 2px;
   width: 100px;
-  background:rgb(81, 227, 213);
+  background:rgb(80, 180, 180);
   top: 130%;
   margin: 0 auto;
   left: 0;

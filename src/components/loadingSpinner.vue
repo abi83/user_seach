@@ -14,6 +14,7 @@ export default {
   width: 80px;
   height: 80px;
   margin: auto;
+  transform: scale(.7);
 }
 .lds-spinner div {
   transform-origin: 40px 40px;

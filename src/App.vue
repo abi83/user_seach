@@ -136,6 +136,16 @@ export default defineComponent({
   font-family: "Poppins";
   src: local("Poppins"),
         url("./fonts/Poppins-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"),
+        url("./fonts/Poppins-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+
 }
 * {
   margin: 0;
@@ -172,11 +182,40 @@ export default defineComponent({
   }
 }
 .btn{
-  padding: 10px 30px;
   margin: 20px auto;
+  padding: 10px 25px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 2px solid rgb(0, 0, 0);
+  z-index: 1;
+  color: black;
+}
+.btn:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: black;
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  color:rgb(80, 180, 180);
+}
+.btn:hover:after {
+  top: 0;
+  height: 100%;
+}
+.btn:active {
+  top: 2px;
 }
 .status{
-  min-height: 84px;
+  min-height: 80px;
   display: flex;
   margin-bottom: 0;
 }
