@@ -1,7 +1,10 @@
 <template>
   <div class="users">
     <template v-for="user in users" :key="user.id">
-      <user-card v-bind:user="user"/>
+      <user-card
+          v-bind:user="user"
+          @click="$emit('selectUser', user)"
+      />
     </template>
   </div>
 </template>
@@ -10,6 +13,7 @@
 import userCard from './userCard'
 
 export default {
+  emits:['selectUser'],
   components:{
     userCard
   },

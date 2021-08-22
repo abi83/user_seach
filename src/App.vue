@@ -1,34 +1,49 @@
 <template>
-  <div class="left">
+  <div class="left" >
     <input class="input" type="text" placeholder="Filter users"
         v-bind:value="searchString"
         v-on:input="filterUsers"
     >
     <template class="users-list" v-if="selectedUsers.length">
-      <user-list v-bind:users="selectedUsers" />
+      <user-list
+          v-bind:users="selectedUsers"
+          v-on:selectUser="showUserDetail"
+      />
     </template>
     <template class="users-list" v-else-if="users.length">
-      <user-list v-bind:users="users" />
+      <user-list
+          v-bind:users="users"
+          v-on:selectUser="showUserDetail"
+      />
     </template>
     <div v-else>
       <div>Users are loading</div>
     </div>
     <button class="btn" @click="fetchUsers">Get users</button>
   </div>
-  <div class="right">Detailed</div>
+  <div class="right">
+    <template v-if="selectedUser">
+      <user-detail v-bind:user="selectedUser"/>
+    </template>
+    <template v-else>
+      Click user in left panel
+    </template>
+  </div>
 </template>
 
 <script>
-import userList from './components/userList'
+import userList from './components/usersList'
+import userDetail from './components/userDetail'
 export default {
   components:{
-    userList
+    userList, userDetail
   },
   data() {
     return{
       users:[],
       selectedUsers: [],
-      searchString:''
+      searchString:'',
+      selectedUser: null
     }
   },
   methods:{
@@ -41,6 +56,11 @@ export default {
         .then(res=>res.json())
         .catch(e=>console.error(e))
       this.users = users.results;
+    },
+    showUserDetail(user){
+      console.log('Debug00', user)
+      this.selectedUser = user
+      console.log(this.selectedUser)
     }
   }
 }
@@ -82,6 +102,7 @@ export default {
 }
 .right{
   flex: 67%;
+  padding: 100px;
   /*border: 1px solid green;*/
 }
 .btn{
