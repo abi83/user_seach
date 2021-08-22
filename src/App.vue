@@ -28,21 +28,25 @@
   </div>
 </template>
 
-<script>
-import userList from './components/usersList'
-import userDetail from './components/userDetail'
-import loadingSpinner from './components/loadingSpinner'
+<script lang="ts">
+import userList from './components/usersList.vue'
+import userDetail from './components/userDetail.vue'
+import loadingSpinner from './components/loadingSpinner.vue'
 
-export default {
+import { defineComponent } from 'vue';
+import {UserType} from './types/user.ts'
+
+export default defineComponent({
+  name: 'App',
   components:{
     userList, userDetail, loadingSpinner
   },
   data() {
     return{
-      users:[],
-      selectedUsers: [],
-      searchString:'',
-      selectedUser: null,
+      users: [] as UserType[],
+      selectedUsers: [] as UserType[],
+      searchString: '' as string | null,
+      selectedUser: null as UserType | null,
       fetchingNew: false,
       justFetched: false
     }
@@ -62,9 +66,12 @@ export default {
     }
   },
   methods:{
-    filterUsers(event){
-      this.searchString = event.target.value
-      this.selectedUsers = this.users.filter(user=>user.name.first.includes(this.searchString))
+    filterUsers(event: Event){
+      const input = event.target as HTMLTextAreaElement;
+      this.searchString = input.value
+      this.selectedUsers = this.users.filter(
+          (user:UserType)=>user.name.first.includes(this.searchString)
+      )
     },
     async fetchUsers(){
       if (this.justFetched || this.fetchingNew){
@@ -74,8 +81,9 @@ export default {
 
       return await fetch('https://randomuser.me/api/?results=25&inc=gender,name,email,picture,location,dob,phone')
         .then(res=>res.json())
-        .then(users=>{
-          this.users.push(...users.results);
+        .then((json: {results: Array<UserType> })=>{
+          const users: UserType[]  = json.results;
+          this.users.push(...users);
           return new Promise(resolve => setTimeout(resolve, 1000))
         })
         .then(()=>{
@@ -88,11 +96,11 @@ export default {
         })
         .catch(e=>console.error(e))
     },
-    showUserDetail(user){
+    showUserDetail(user: UserType){
       this.selectedUser = user
     },
   }
-}
+})
 
 </script>
 
