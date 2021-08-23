@@ -63,22 +63,10 @@ export default defineComponent({
 .detail-wrapper{
   margin: auto 0;
   padding: 3vh 3vw;
-
-  /*display: flex;*/
-  /*align-items: center;*/
-  /*justify-content: center;*/
 }
 .detail{
-  /*flex: 1 0 100%;*/
-  /*width: 100%;*/
-  /*flex-basis: 500px;*/
-  /*flex-grow: 2;*/
   background-color: white;
-  /*min-width: 100%;*/
   padding: 20px;
-  /*display: flex;*/
-  /*width: 100%;*/
-  /*flex-direction: column;*/
 }
 @media screen and (max-width: 800px) {
   .detail-wrapper{

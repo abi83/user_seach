@@ -46,6 +46,5 @@ export default defineComponent({
 .users{
   height: 83vh;
   overflow-y: auto;
-  /*overflow-x: auto;*/
 }
 </style>

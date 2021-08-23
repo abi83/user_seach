@@ -119,6 +119,9 @@ export default defineComponent({
     },
     searchFemale(newValue):void{
       sessionStorage.setItem('searchFemale', JSON.stringify(newValue))
+    },
+    selectedUser(newValue):void{
+      sessionStorage.setItem('selectedUser', JSON.stringify(newValue))
     }
   },
   methods:{
@@ -158,7 +161,6 @@ export default defineComponent({
     },
     showUserDetail(user: UserType):void{
       this.selectedUser = user
-      sessionStorage.setItem('selectedUser', JSON.stringify(user))
     },
   }
 })
