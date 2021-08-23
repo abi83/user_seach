@@ -44,7 +44,8 @@ export default defineComponent({
 
 <style scoped>
 .users{
-  overflow-y: scroll;
-  overflow-x: auto;
+  height: 83vh;
+  overflow-y: auto;
+  /*overflow-x: auto;*/
 }
 </style>

@@ -1,0 +1,103 @@
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"),
+        url("./fonts/Poppins-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"),
+        url("./fonts/Poppins-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", Helvetica, Arial, serif;
+}
+.overflow{
+  background-color: rgb(220,220,220);
+}
+.btn{
+  margin: 20px auto;
+  padding: 10px 25px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 2px solid rgb(0, 0, 0);
+  z-index: 1;
+  color: black;
+}
+.btn:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: black;
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  color:rgb(80, 180, 180);
+}
+.btn:hover:after {
+  top: 0;
+  height: 100%;
+}
+.btn:active {
+  top: 2px;
+}
+/*input[type=text]{*/
+/*  border: 0;*/
+/*  border-bottom: 2px solid gray;*/
+/*  !*padding: 10px;*!*/
+/*  !*transition: border-color 0.2s;*!*/
+/*  outline: 0;*/
+/*  font-size: 1.3rem;*/
+/*  color: red;*/
+/*  padding: 7px 0;*/
+/*  background: transparent;*/
+/*  transition: border-color 0.2s;*/
+/*}*/
+/*input[type=text]::placeholder{*/
+/*  color: transparent;*/
+/*}*/
+/*input[type=text]:placeholder-shown ~ label{*/
+/*  font-size: 1.3rem;*/
+/*  cursor: text;*/
+/*  top: 20px;*/
+/*}*/
+
+/*input[type=text]:focus{*/
+/*  padding-bottom: 6px;*/
+/*  color: blue;*/
+/*  font-weight: 600;*/
+/*  border-width: 3px;*/
+/*  border-bottom: 2px solid fuchsia;*/
+
+/*  !*border-image: linear-gradient(to right, blue, yellowgreen);*!*/
+/*  !*border-image-slice: 1;*!*/
+/*}*/
+
+/*label[type=text]{*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  display: block;*/
+/*  transition: 0.2s;*/
+/*  font-size: 1rem;*/
+/*  color: green;*/
+/*}*/
+.form{
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 100%;
+}

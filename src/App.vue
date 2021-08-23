@@ -1,9 +1,18 @@
 <template>
   <div class="left" >
-    <input class="input" type="text" placeholder="Filter users"
-        v-bind:value="searchString"
-        v-on:input="filterUsers"
-    >
+    <div class="form">
+      <input class="input" type="text" id="search" placeholder="Filter users"
+          v-bind:value="searchString"
+          v-on:input="filterUsers"
+      >
+      <label for="search">Filter users</label>
+      <div>
+        <input type="checkbox" id="male" name="sex" value="male" checked>
+        <label for="male">Male</label>
+        <input type="checkbox" id="female" name="sex" value="female" checked>
+        <label for="female">Female</label>
+      </div>
+    </div>
     <div v-if="!users.length">
       Users are loading...
     </div>
@@ -135,37 +144,7 @@ export default defineComponent({
 </script>
 
 <style>
-#app{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  max-width: 1076px;
-  margin: auto;
-}
-@font-face {
-  font-family: "Poppins";
-  src: local("Poppins"),
-        url("./fonts/Poppins-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-}
-@font-face {
-  font-family: "Poppins";
-  src: local("Poppins"),
-        url("./fonts/Poppins-SemiBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 600;
-
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", Helvetica, Arial, serif;
-}
 .input{
-  border: 1px solid black;
-  padding: 10px;
   margin: 30px 10px 30px 10px;
   width: calc(100% - 20px);
 }
@@ -191,42 +170,10 @@ export default defineComponent({
     flex: 0;
   }
 }
-.btn{
-  margin: 20px auto;
-  padding: 10px 25px;
-  font-weight: 600;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  border: 2px solid rgb(0, 0, 0);
-  z-index: 1;
-  color: black;
-}
-.btn:after {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  background: black;
-  transition: all 0.3s ease;
-}
-.btn:hover {
-  color:rgb(80, 180, 180);
-}
-.btn:hover:after {
-  top: 0;
-  height: 100%;
-}
-.btn:active {
-  top: 2px;
-}
 .status{
   min-height: 80px;
   display: flex;
   margin-bottom: 0;
+  height: 7vh;
 }
 </style>
