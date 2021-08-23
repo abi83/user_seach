@@ -1,3 +1,6 @@
+:root {
+  --secondary: #50b4b4;
+}
 @font-face {
   font-family: "Poppins";
   src: local("Poppins"),
@@ -20,7 +23,15 @@
   font-family: "Poppins", Helvetica, Arial, serif;
 }
 .overflow{
-  background-color: rgb(220,220,220);
+  background-color: whitesmoke;
+}
+#app{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  max-width: 1076px;
+  margin: auto;
+  background-color: white;
 }
 .btn{
   margin: 20px auto;
@@ -30,9 +41,10 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  border: 2px solid rgb(0, 0, 0);
+  border: 2px solid var(--secondary);
   z-index: 1;
   color: black;
+  min-width: 120px;
 }
 .btn:after {
   position: absolute;
@@ -46,7 +58,7 @@
   transition: all 0.3s ease;
 }
 .btn:hover {
-  color:rgb(80, 180, 180);
+  color: var(--secondary);
 }
 .btn:hover:after {
   top: 0;
@@ -55,49 +67,105 @@
 .btn:active {
   top: 2px;
 }
-/*input[type=text]{*/
-/*  border: 0;*/
-/*  border-bottom: 2px solid gray;*/
-/*  !*padding: 10px;*!*/
-/*  !*transition: border-color 0.2s;*!*/
-/*  outline: 0;*/
-/*  font-size: 1.3rem;*/
-/*  color: red;*/
-/*  padding: 7px 0;*/
-/*  background: transparent;*/
-/*  transition: border-color 0.2s;*/
-/*}*/
-/*input[type=text]::placeholder{*/
-/*  color: transparent;*/
-/*}*/
-/*input[type=text]:placeholder-shown ~ label{*/
-/*  font-size: 1.3rem;*/
-/*  cursor: text;*/
-/*  top: 20px;*/
-/*}*/
-
-/*input[type=text]:focus{*/
-/*  padding-bottom: 6px;*/
-/*  color: blue;*/
-/*  font-weight: 600;*/
-/*  border-width: 3px;*/
-/*  border-bottom: 2px solid fuchsia;*/
-
-/*  !*border-image: linear-gradient(to right, blue, yellowgreen);*!*/
-/*  !*border-image-slice: 1;*!*/
-/*}*/
-
-/*label[type=text]{*/
-/*  position: absolute;*/
-/*  top: 0;*/
-/*  display: block;*/
-/*  transition: 0.2s;*/
-/*  font-size: 1rem;*/
-/*  color: green;*/
-/*}*/
-.form{
+.text-input{
+  width: calc(100% - 30px);
+  margin: 25px 0;
+  border: 0;
+  border-bottom: 2px solid var(--secondary);
+  padding: 10px 0 10px 0;
+  outline: 0;
+  font-size: 1.3rem;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+.text-input::placeholder{
+  color: transparent;
+}
+.text-input:placeholder-shown ~ .text-label{
+  font-size: 1.3rem;
+  cursor: text;
+  top: 35px;
+}
+.text-input:focus{
+  padding-bottom: 9px;
+  border-width: 3px;
+  border-image: linear-gradient(to right, grey, var(--secondary)) 1;
+}
+.text-input:focus ~ .text-label {
+  position: absolute;
+  top: 10px;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--secondary);
+}
+.text-label{
+  position: absolute;
+  top: 10px;
+  display: block;
+  transition: 0.2s;
+  font-size: 0.8rem;
+  color: grey;
+}
+.text-input-container{
   position: relative;
-  padding: 15px 0 0;
-  margin-top: 10px;
   width: 100%;
+}
+.custom-checkbox{
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  user-select: none;
+}
+.checkmark{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.custom-checkbox:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: var(--secondary);
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+.custom-checkbox .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.mb-0{
+  margin-bottom: 0;
+}
+.pl-2{
+  padding-left: 10px;
+}
+.ma{
+  margin: auto;
 }

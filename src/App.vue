@@ -1,22 +1,30 @@
 <template>
-  <div class="left" >
+  <div class="left pl-2" >
     <div class="form">
-      <input class="input" type="text" id="search" placeholder="Filter users"
-          v-bind:value="searchString"
-          v-on:input="filterUsers"
-      >
-      <label for="search">Filter users</label>
-      <div>
-        <input type="checkbox" id="male" name="sex" value="male" checked>
-        <label for="male">Male</label>
-        <input type="checkbox" id="female" name="sex" value="female" checked>
-        <label for="female">Female</label>
+      <div class="text-input-container">
+        <input class="text-input" type="text" id="search" placeholder="Filter users" autocomplete="off"
+            v-bind:value="searchString"
+            v-on:input="filterUsers"
+        >
+        <label class="text-label" for="search">Filter users</label>
+      </div>
+      <div class="checkbox-input-container">
+        <label class="custom-checkbox mb-0" for="male">
+          Male
+          <input type="checkbox" id="male" v-model="searchMale">
+          <span class="checkmark"></span>
+        </label>
+        <label class="custom-checkbox" for="female">
+          Female
+          <input type="checkbox" id="female" v-model="searchFemale">
+          <span class="checkmark"></span>
+        </label>
       </div>
     </div>
-    <div v-if="!users.length">
+    <div v-if="!users.length" class="ma">
       Users are loading...
     </div>
-    <div v-if="serverError">
+    <div v-if="serverError" class="ma">
       Connection problem...
     </div>
     <user-list
@@ -25,7 +33,7 @@
         v-on:selectUser="showUserDetail"
         v-on:getMoreUsers="fetchUsers"
     />
-    <div v-else>
+    <div v-else class="ma">
       No users found
     </div>
     <div class="status">
@@ -41,7 +49,7 @@
         v-if="selectedUser"
         :close-detail="() => this.selectedUser=null"
     />
-    <div class="right-none" v-else>
+    <div class="right-none ma" v-else>
       Click user in left panel
     </div>
   </div>
@@ -61,7 +69,9 @@ export default defineComponent({
   data(){
     return{
       users: [] as UserType[],
-      searchString: '' as string,
+      searchString: '',
+      searchMale: true,
+      searchFemale: true,
       selectedUser: null as UserType | null,
       fetchingNow: false,
       serverError: false,
@@ -69,14 +79,20 @@ export default defineComponent({
   },
   computed:{
     selectedUsers(): UserType[] {
-      if (!this.searchString) {
+      if (!this.searchString && this.searchFemale && this.searchMale) {
         return this.users
       }
+      const genders = [this.searchMale && 'male', this.searchFemale && 'female']
       return this.users.filter(
-          (user)=>{
-            return user.name.first.toLowerCase().includes(this.searchString.toLowerCase()) ||
-                   user.name.last.toLowerCase().includes(this.searchString.toLowerCase())
-          }
+        (user)=>{
+          return (
+            (
+              user.name.first.toLowerCase().includes(this.searchString.toLowerCase()) ||
+              user.name.last.toLowerCase().includes(this.searchString.toLowerCase())
+            ) &&
+            genders.includes(user.gender)
+          )
+        }
       )
     },
   },
@@ -90,13 +106,19 @@ export default defineComponent({
     }
   },
   mounted():void{
-    if (localStorage.getItem('searchString')){
-      this.searchString = localStorage.getItem('searchString') || ''
-    }
+    this.searchString = sessionStorage.getItem('searchString') || ''
+    this.searchMale = JSON.parse(sessionStorage.getItem('searchMale') || 'true')
+    this.searchFemale = JSON.parse(sessionStorage.getItem('searchFemale') || 'true')
   },
   watch: {
     searchString(newValue):void{
-      localStorage.setItem('searchString', newValue)
+      sessionStorage.setItem('searchString', newValue)
+    },
+    searchMale(newValue):void{
+      sessionStorage.setItem('searchMale', JSON.stringify(newValue))
+    },
+    searchFemale(newValue):void{
+      sessionStorage.setItem('searchFemale', JSON.stringify(newValue))
     }
   },
   methods:{
@@ -144,10 +166,6 @@ export default defineComponent({
 </script>
 
 <style>
-.input{
-  margin: 30px 10px 30px 10px;
-  width: calc(100% - 20px);
-}
 .left{
   flex: 33%;
   height: 100vh;
@@ -158,9 +176,6 @@ export default defineComponent({
 .right{
   flex: 67%;
   display: flex;
-}
-.right > div:first-child {
-  margin: auto;
 }
 @media screen and (max-width: 800px) {
   .right-none{
@@ -173,7 +188,17 @@ export default defineComponent({
 .status{
   min-height: 80px;
   display: flex;
-  margin-bottom: 0;
   height: 7vh;
+}
+.form{
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+}
+.checkbox-input-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
 }
 </style>
