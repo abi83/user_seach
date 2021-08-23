@@ -3,8 +3,7 @@
     <div class="form">
       <div class="text-input-container">
         <input class="text-input" type="text" id="search" placeholder="Filter users" autocomplete="off"
-            v-bind:value="searchString"
-            v-on:input="filterUsers"
+            v-model="searchString"
         >
         <label class="text-label" for="search">Filter users</label>
       </div>
@@ -125,10 +124,6 @@ export default defineComponent({
     }
   },
   methods:{
-    filterUsers(event: Event):void{
-      const input = event.target as HTMLTextAreaElement;
-      this.searchString = input.value
-    },
     async fetchUsers(): Promise<any>{
       if (this.fetchingNow){
         return
